@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Internal;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,14 @@ namespace SearchTicketBot
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private bool Calculate()
         {
+            
+
             string departure = textBox1.Text;
             string arrival = textBox2.Text;
             string date = textBox3.Text;
 
-            Browser = new OpenQA.Selenium.Chrome.ChromeDriver();
             Browser.Navigate().GoToUrl("https://booking.uz.gov.ua/ru/");
 
             IWebElement SearchDepartureCity = Browser.FindElement(By.Name("from-title"));
@@ -68,7 +70,7 @@ namespace SearchTicketBot
                 IWebElement platskart = Browser.FindElement(By.CssSelector("input[data-wagon-id='П']")) ?? null;
                 plExist = true;
             }
-            catch (Exception){}
+            catch (Exception) { }
 
 
             try
@@ -78,21 +80,42 @@ namespace SearchTicketBot
             }
             catch (Exception) { }
 
-            if (plExist)
-            {
-                MessageBox.Show("Platskarts");
-            }
-            if (kuExist)
-            {
-                MessageBox.Show("Сoupes");
-            }
 
+            if (plExist) return plExist;
+            
+            if (kuExist) return kuExist;
 
+            return false;
+
+            
         }
+        
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
+
+
+            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            chromeDriverService.HideCommandPromptWindow = true;
+            
+
+            Browser = new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService);
+
+            
+
+            while (Calculate() == false)
+            {
+                System.Threading.Thread.Sleep(10000);
+            }
+
+
             Browser.Quit();
+
+            Browser = new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService);
+            Browser.Manage().Window.Maximize();
+            Browser.Navigate().GoToUrl("https://booking.uz.gov.ua/ru/");
         }
+
+
     }
 }
