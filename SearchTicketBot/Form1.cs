@@ -51,12 +51,43 @@ namespace SearchTicketBot
 
             System.Threading.Thread.Sleep(1000);
 
-            IWebElement submitButton = Browser.FindElement(By.TagName("button"));
             List<IWebElement> subButtons = Browser.FindElements(By.TagName("button")).ToList();
 
             System.Threading.Thread.Sleep(1000);
 
             subButtons.Last().Submit();
+
+            System.Threading.Thread.Sleep(1000);
+
+
+            bool plExist = false;
+            bool kuExist = false;
+
+            try
+            {
+                IWebElement platskart = Browser.FindElement(By.CssSelector("input[data-wagon-id='П']")) ?? null;
+                plExist = true;
+            }
+            catch (Exception){}
+
+
+            try
+            {
+                IWebElement kupe = Browser.FindElement(By.CssSelector("input[data-wagon-id='К']")) ?? null;
+                kuExist = true;
+            }
+            catch (Exception) { }
+
+            if (plExist)
+            {
+                MessageBox.Show("Platskarts");
+            }
+            if (kuExist)
+            {
+                MessageBox.Show("Сoupes");
+            }
+
+
         }
 
         private void button2_Click(object sender, EventArgs e)
