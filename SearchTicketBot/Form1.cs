@@ -22,7 +22,7 @@ namespace SearchTicketBot
             InitializeComponent();
         }
 
-        private bool Calculate()
+        private void Calculate()
         {
             
 
@@ -81,19 +81,38 @@ namespace SearchTicketBot
             catch (Exception) { }
 
 
-            if (plExist) return plExist;
-            
-            if (kuExist) return kuExist;
+            if (plExist || plExist)
+            {
+                Browser.Quit();
 
-            return false;
+                var chromeDriverService = ChromeDriverService.CreateDefaultService();
+                chromeDriverService.HideCommandPromptWindow = true;
+
+                Browser = new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService);
+                Browser.Manage().Window.Maximize();
+                Browser.Navigate().GoToUrl("https://booking.uz.gov.ua/ru/");
+
+            }
+            
+            
 
             
         }
-        
 
-        private void button1_Click(object sender, EventArgs e)
+
+        public async Task DoSomethingAndWaitAsync()
         {
+            while (true)
+            { 
+                await Task.Run(() => Calculate());
+                await Task.Delay(TimeSpan.FromMinutes(1));
+            }
+        }
 
+
+
+        private async void button1_ClickAsync(object sender, EventArgs e)
+        {
 
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
@@ -101,19 +120,8 @@ namespace SearchTicketBot
 
             Browser = new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService);
 
-            
+            await DoSomethingAndWaitAsync();
 
-            while (Calculate() == false)
-            {
-                System.Threading.Thread.Sleep(10000);
-            }
-
-
-            Browser.Quit();
-
-            Browser = new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService);
-            Browser.Manage().Window.Maximize();
-            Browser.Navigate().GoToUrl("https://booking.uz.gov.ua/ru/");
         }
 
 
