@@ -3,11 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Internal;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,8 +20,6 @@ namespace SearchTicketBot
 
         private void Calculate()
         {
-            
-
             string departure = textBox1.Text;
             string arrival = textBox2.Text;
             string date = textBox3.Text;
@@ -34,13 +28,13 @@ namespace SearchTicketBot
 
             IWebElement SearchDepartureCity = Browser.FindElement(By.Name("from-title"));
             SearchDepartureCity.SendKeys(departure);
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(5000);
             SearchDepartureCity.SendKeys(OpenQA.Selenium.Keys.ArrowDown + OpenQA.Selenium.Keys.Enter);
 
 
             IWebElement SearchArrivalCity = Browser.FindElement(By.Name("to-title"));
             SearchArrivalCity.SendKeys(arrival);
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(5000);
             SearchArrivalCity.SendKeys(OpenQA.Selenium.Keys.ArrowDown + OpenQA.Selenium.Keys.Enter + OpenQA.Selenium.Keys.Enter);
 
             // set date
@@ -51,15 +45,15 @@ namespace SearchTicketBot
             var jsExecutor = (IJavaScriptExecutor)driver;
             jsExecutor.ExecuteScript("arguments[0].setAttribute(arguments[1], arguments[2]);", SetDate, "value", date);
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(5000);
 
             List<IWebElement> subButtons = Browser.FindElements(By.TagName("button")).ToList();
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(5000);
 
             subButtons.Last().Submit();
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(5000);
 
 
             bool plExist = false;
@@ -81,7 +75,7 @@ namespace SearchTicketBot
             catch (Exception) { }
 
 
-            if (plExist || plExist)
+            if (kuExist || plExist)
             {
                 Browser.Quit();
 
