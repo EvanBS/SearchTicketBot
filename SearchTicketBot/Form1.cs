@@ -6,17 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace SearchTicketBot
 {
     public partial class Form1 : Form
     {
         IWebDriver Browser;
-
+        
         public Form1()
         {
             InitializeComponent();
         }
+
+
 
         private void Calculate()
         {
@@ -67,14 +70,6 @@ namespace SearchTicketBot
             catch (Exception) { }
 
 
-            try
-            {
-                IWebElement kupe = Browser.FindElement(By.CssSelector("input[data-wagon-id='К']")) ?? null;
-                kuExist = true;
-            }
-            catch (Exception) { }
-
-
             if (kuExist || plExist)
             {
                 Browser.Quit();
@@ -86,11 +81,15 @@ namespace SearchTicketBot
                 Browser.Manage().Window.Maximize();
                 Browser.Navigate().GoToUrl("https://booking.uz.gov.ua/ru/");
 
-            }
-            
-            
+                WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
+                wplayer.URL = @"D:/Chrome Downloads/ding.mp3";
+                wplayer.controls.play();
 
-            
+            }
+
+
+
+
         }
 
 
@@ -118,6 +117,9 @@ namespace SearchTicketBot
 
         }
 
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }
